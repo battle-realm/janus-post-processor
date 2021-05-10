@@ -1,0 +1,1 @@
+docker build -t mjr2webm:latest .

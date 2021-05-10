@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-FILES=$(find ./ -name '*video.mjr')
+FILES=$@
 FAILED=""
 
 if [ ! -x "$(command -v ffmpeg)" ]; then
@@ -21,17 +21,19 @@ fi
 set +e
 for video in $FILES
 do
-  filename=$(echo $video | awk -F"-" '{print $1"-"$2"-"$3"-"$4"-"$5}')
-  if [ -f $filename"-audio.mjr" ]; then
+  echo "$video"
+  filename=$(echo $video | awk -F"_" '{print $2}')
+  echo "$filename"
+  if [ -f "audio_"$filename ]; then
     printf "\033[36mProcessing\033[0m $filename\n"
     printf "  -> \033[35mExtracting video\033[0m\n"
-    janus-pp-rec $video /tmp/janus-recordings/video.webm >/dev/null 2>&1
+    janus-pp-rec $video /tmp/janus-recordings/video.webm
     RESULT=$?
     printf "  -> \033[35mExtracting audio\033[0m\n"
-    janus-pp-rec $filename"-audio.mjr" /tmp/janus-recordings/audio.opus >/dev/null 2>&1
+    janus-pp-rec "audio_"$filename /tmp/janus-recordings/audio.opus
     RESULT=$?
     printf "  -> \033[33mMerging\033[0m\n"
-    ffmpeg -i /tmp/janus-recordings/audio.opus -i /tmp/janus-recordings/video.webm -y -c:v copy -c:a copy $filename.webm  >/dev/null 2>&1
+    ffmpeg -i /tmp/janus-recordings/audio.opus -i /tmp/janus-recordings/video.webm -y -c:v copy -c:a copy $video.webm 
     RESULT=$?
     if [ $RESULT -eq 0 ]; then
       rm -rf /tmp/janus-recordings/video.webm

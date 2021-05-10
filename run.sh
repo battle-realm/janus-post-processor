@@ -11,7 +11,7 @@
 
 set -e
 
-IMAGE="giordanocardillo/janus-post-processor"
+IMAGE="mjr2webm:latest"
 
 
 # Setup options for connecting to docker host
@@ -27,7 +27,7 @@ fi
 
 # Setup volume mounts for context
 if [ "$(pwd)" != '/' ]; then
-    VOLUMES="-v $(pwd):$(pwd)"
+    VOLUMES="-v $(pwd):/$(pwd)"
 fi
 # TODO: also check --file argument
 if [ -n "$HOME" ]; then
