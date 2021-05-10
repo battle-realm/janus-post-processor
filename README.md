@@ -13,5 +13,6 @@ The provided `janus-pp-rec` executable file has been compiled under alpine linux
 ## Usage
 
 1. `$ bash build_docker.sh`
-2. Convert all .mjr files in folder: `$ bash run.sh`
-3. Specify files to convert: `$ bash run.sh video_12345.mjr video_54321.mjr`
+2. `$ chmod +x run.sh && cp run.sh /usr/bin/mjr2webm-tool`
+3. Convert all .mjr files in folder: `$ mjr2webm-tool`
+4. Specify files to convert: `$ mjr2webm-tool mjr2webm video_12345.mjr video_54321.mjr`
